@@ -1,6 +1,7 @@
 body
 {
     font-family: 'Open Sans', sans-serif;
+    background: url("../img/fond_ecran.jpg") fixed;
 }
 
 h1

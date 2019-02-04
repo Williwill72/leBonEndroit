@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+
+    {{ form_start(userForm, {
+        'attr': {
+            'novalidate': 'novalidate'
+        }})
+    }}
+
+    {{ form_widget(userForm) }}
+
+    <button class="btn btn-success">Envoyer !</button>
+    {{ form_end(userForm) }}
+
+{% endblock %}

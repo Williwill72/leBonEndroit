@@ -25,19 +25,36 @@
                     <a href="{{ path('article_add') }}">Ajouter</a>
                 </div>
 
-                <div class="nav-link offset-6 col-1">
-                    <a href="#">Inscription</a>
-                </div>
+                {% if app.user %}
 
-                <div class="nav-link col-1">
-                    <a href="#">connexion</a>
-                </div>
+                    <div class="offset-6 col-1">
+                        <a href="{{ path('logout') }}">Déconnexion</a>
+                    </div>
+
+                {% else %}
+
+                    <div class="nav-link offset-6 col-1">
+                        <a href="{{ path('register') }}">Inscription</a>
+                    </div>
+
+                    <div class="nav-link col-1">
+                        <a href="{{ path("login") }}">connexion</a>
+                    </div>
+
+                {% endif %}
 
             </div>
 
         </header>
 
         <main class="container">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
             {% block content %}{% endblock %}
         </main>
 

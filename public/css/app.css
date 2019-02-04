@@ -26,8 +26,18 @@ main
     flex-grow: 1;
 }
 
+.article
+{
+    color: white;
+}
 
 footer
 {
     background-color: orange;
+    padding: 20px;
+}
+
+footer>div
+{
+    text-align: center;
 }

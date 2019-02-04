@@ -2,11 +2,45 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/open-sans.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        <header class="container">
+
+            <div class="navbar">
+
+                <div class="nav-link col-2">
+                    <a href="#">Le bon Endroit</a>
+                </div>
+
+                <div class="nav-link offset-6 col-1">
+                    <a href="#">Inscription</a>
+                </div>
+
+                <div class="nav-link col-1">
+                    <a href="#">connexion</a>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="container">
+
+            <div class="navbar">
+                <div class="nav-link">
+                    <a href="#">Accueil</a>
+                </div>
+            </div>
+
+        </footer>
     </body>
 </html>

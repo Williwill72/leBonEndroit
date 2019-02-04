@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel article{% endblock %}
+
+{% block content %}
+    <h1>Ajouter votre article</h1>
+
+    {{ form_start(articleForm, {
+        'attr': {
+            'novalidate': 'novalidate'
+        }})
+    }}
+
+    {{ form_widget(articleForm) }}
+
+    <button class="btn btn-success">Envoyer !</button>
+    {{ form_end(articleForm) }}
+
+{% endblock %}

@@ -30,7 +30,7 @@ class ArticleController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Votre article a bien été ajouté');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('article_list');
         }
 
         return $this->render("article/create.html.twig",[
@@ -39,4 +39,21 @@ class ArticleController extends AbstractController
 
     }
 
+    /**
+     * @Route(
+     *          "/article/list"
+     *          , name="article_list"
+     *          , methods={"GET"}
+     *     )
+     */
+    public function listArticle()
+    {
+        $articleRepository =$this->getDoctrine()->getRepository(Article::class);
+
+        $articles = $articleRepository->findAll();
+
+        return $this->render("article/list.html.twig",[
+            "articles" => $articles
+        ]);
+    }
 }

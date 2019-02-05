@@ -13,31 +13,33 @@
 
             <div class="navbar">
 
-                <div class="nav-link col-2">
+                <div class="nav-link">
                     <a href="{{ path('home') }}">Le bon Endroit</a>
                 </div>
 
-                <div class="nav-link col-1">
+                <div class="nav-link">
                     <a href="{{ path('article_list') }}">Liste</a>
-                </div>
-
-                <div class="nav-link col-1">
-                    <a href="{{ path('article_add') }}">Ajouter</a>
                 </div>
 
                 {% if app.user %}
 
-                    <div class="offset-6 col-1">
+                    <div class="nav-link">
+                        <a href="{{ path('article_add') }}">Ajouter</a>
+                    </div>
+                    <div class="nav-link offset-5">
+                        <a href="{{ path('account') }}">Mon compte</a>
+                    </div>
+                    <div class="nav-link">
                         <a href="{{ path('logout') }}">Déconnexion</a>
                     </div>
 
                 {% else %}
 
-                    <div class="nav-link offset-6 col-1">
+                    <div class="nav-link offset-7">
                         <a href="{{ path('register') }}">Inscription</a>
                     </div>
 
-                    <div class="nav-link col-1">
+                    <div class="nav-link">
                         <a href="{{ path("login") }}">connexion</a>
                     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -54,6 +55,7 @@ class FixturesCommand extends Command
         $conn->query('SET FOREIGN_KEY_CHECKS = 0');
 
         $conn->query('TRUNCATE article');
+        $conn->query('TRUNCATE user');
 
         $conn->query('SET FOREIGN_KEY_CHECKS = 1');
 
@@ -61,8 +63,18 @@ class FixturesCommand extends Command
 
         $io->progressStart(100);
 
+        $roles = [["admin"],["user"]];
+
         for($i=0;$i<100;$i++){
             $io->progressAdvance(1);
+
+            $user = new User();
+            $user->setUsername($faker->name);
+            $user->setEmail($faker->email);
+            $user->setRoles($faker->randomElements($roles));
+            $user->setPassword($this->encoder->encodePassword($user, $user->getUsername()));
+
+            $this->em->persist($user);
 
             $article = new Article();
             $article->setName($faker->name);

@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mon-compte{% endblock %}
+
+{% block content %}
+
+    <div>
+        <p>Pseudo: {{ app.user.username }}</p>
+        <p>Email: {{ app.user.email }}</p>
+    </div>
+
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,32 +20,30 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return User[] Returns an array of User objects
+    */
+
+    public function findByUserId(User $user)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('a.user = :val')
+            ->setParameter('val', $user)
             ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Article
+    public function remove($id)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $dql = "DELETE App\Entity\Article a
+                WHERE a.id = :id";
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameter(':id', $id);
+        $query->execute();
     }
-    */
+
 }

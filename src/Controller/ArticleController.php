@@ -25,6 +25,8 @@ class ArticleController extends AbstractController
 
         if($articleForm->isSubmitted() && $articleForm->isValid())
         {
+            $article->setUser($this->getUser());
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
@@ -56,4 +58,20 @@ class ArticleController extends AbstractController
             "articles" => $articles
         ]);
     }
+
+    /**
+     * @Route(
+     *     "article/remove/{id}",
+     *     name="article_remove",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET"}
+     *     )
+     */
+    public function removeArticle($id)
+    {
+        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
+        $articleRepository->remove($id);
+        return $this->redirectToRoute("account");
+    }
+
 }

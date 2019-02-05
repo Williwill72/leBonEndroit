@@ -10,6 +10,7 @@
         <div class="article panel panel-default">
             <div class="panel-heading">
                 <h3>{{ article.name }}</h3>
+                <p>Ajouté le {{ article.dateCreated|date('d-m-Y H:i:s') }} par {{ article.user.username }}</p>
             </div>
             <div class="panel-body">
                 <table class="table">

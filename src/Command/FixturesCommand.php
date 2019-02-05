@@ -61,11 +61,23 @@ class FixturesCommand extends Command
 
         $io->text("Tables are now empty...");
 
-        $io->progressStart(100);
+        $io->progressStart(20);
 
-        $roles = [["admin"],["user"]];
+        $roles = ["admin","user"];
 
-        for($i=0;$i<100;$i++){
+        $users = [];
+
+        $user = new User();
+        $user->setUsername("test");
+        $user->setEmail("test@gmail.com");
+        $user->setRoles(["user"]);
+        $user->setPassword($this->encoder->encodePassword($user, $user->getUsername()));
+
+        $this->em->persist($user);
+
+        $users[] = $user;
+
+        for($i=0;$i<20;$i++) {
             $io->progressAdvance(1);
 
             $user = new User();
@@ -76,10 +88,24 @@ class FixturesCommand extends Command
 
             $this->em->persist($user);
 
+            $users[] = $user;
+        }
+
+        $this->em->flush();
+        $io->progressFinish();
+        $io->progressStart(200);
+
+        for($i=0;$i<200;$i++){
+            $io->progressAdvance(1);
+
             $article = new Article();
             $article->setName($faker->name);
             $article->setDescription($faker->text);
             $article->setPrice($faker->randomNumber());
+            $article->setUser($faker->randomElement($users));
+            $article->setCity($faker->city);
+            $article->setZip($faker->numerify("#####"));
+            $article->setDateCreated($faker->dateTimeBetween("-1 year", "now"));
 
             $this->em->persist($article);
         }

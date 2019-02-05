@@ -21,9 +21,16 @@ class AddArticleType extends AbstractType
             ->add('description',TextareaType::class,[
                 "label" => "description"
             ])
+            ->add('city', TextType::class,[
+                "label" => "ville"
+            ])
+            ->add('zip', TextType::class,[
+                "label" => "code postal"
+            ])
             ->add('price', NumberType::class,[
                 "label" => "prix"
             ])
+
         ;
     }
 

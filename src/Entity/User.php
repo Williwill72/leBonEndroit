@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -37,6 +39,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=50)
      */
     private $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user")
+     */
+    private $user_article;
+
+    public function __construct()
+    {
+        $this->user_article = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +131,37 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getUserArticle(): Collection
+    {
+        return $this->user_article;
+    }
+
+    public function addUserArticle(Article $userArticle): self
+    {
+        if (!$this->user_article->contains($userArticle)) {
+            $this->user_article[] = $userArticle;
+            $userArticle->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserArticle(Article $userArticle): self
+    {
+        if ($this->user_article->contains($userArticle)) {
+            $this->user_article->removeElement($userArticle);
+            // set the owning side to null (unless already changed)
+            if ($userArticle->getUser() === $this) {
+                $userArticle->setUser(null);
+            }
+        }
 
         return $this;
     }

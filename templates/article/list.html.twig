@@ -6,10 +6,20 @@
 
     <h1>Liste des articles</h1>
 
+    <p>Trier par</p>
+    <form method="post" action="{{ path('article_list') }}">
+        <select name="category">
+            {% for category in categories %}
+                <option>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+
     {% for article in articles %}
         <div class="article panel panel-default">
             <div class="panel-heading">
-                <h3>{{ article.name }}</h3>
+                <a href="{{ path('article_detail', {'id': article.id}) }}"><h3>{{ article.name }}</h3></a>
                 <p>Ajouté le {{ article.dateCreated|date('d-m-Y H:i:s') }} par {{ article.user.username }}</p>
             </div>
             <div class="panel-body">

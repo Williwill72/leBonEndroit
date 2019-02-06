@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -56,6 +57,7 @@ class FixturesCommand extends Command
 
         $conn->query('TRUNCATE article');
         $conn->query('TRUNCATE user');
+        $conn->query('TRUNCATE category');
 
         $conn->query('SET FOREIGN_KEY_CHECKS = 1');
 
@@ -64,7 +66,8 @@ class FixturesCommand extends Command
         $io->progressStart(20);
 
         $roles = ["admin","user"];
-
+        $categoriesName = ["Outil","Véhicule","Meuble","Jeu"];
+        $categories = [];
         $users = [];
 
         $user = new User();
@@ -93,15 +96,27 @@ class FixturesCommand extends Command
 
         $this->em->flush();
         $io->progressFinish();
+
+        for($i=0; $i<4;$i++)
+        {
+            $category = new Category();
+            $category->setName($categoriesName[$i]);
+            $categories[] = $category;
+            $this->em->persist($category);
+        }
+
+        $this->em->flush();
+
         $io->progressStart(200);
 
         for($i=0;$i<200;$i++){
             $io->progressAdvance(1);
 
             $article = new Article();
-            $article->setName($faker->name);
+            $article->setName($faker->text(20));
             $article->setDescription($faker->text);
             $article->setPrice($faker->randomNumber());
+            $article->setArticleCategory($faker->randomElement($categories));
             $article->setUser($faker->randomElement($users));
             $article->setCity($faker->city);
             $article->setZip($faker->numerify("#####"));

@@ -97,6 +97,10 @@ class FixturesCommand extends Command
         $this->em->flush();
         $io->progressFinish();
 
+        $category = new Category();
+        $category->setName("Tous");
+        $this->em->persist($category);
+
         for($i=0; $i<4;$i++)
         {
             $category = new Category();

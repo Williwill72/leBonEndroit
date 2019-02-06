@@ -6,21 +6,27 @@
 
     <h1>Liste des articles</h1>
 
-    <p>Trier par</p>
-    <form method="post" action="{{ path('article_list') }}">
-        <select name="category">
-            {% for category in categories %}
-                <option>{{ category.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit">
-    </form>
+    {{ form_start(categoryForm, {
+        'attr': {
+            'novalidate': 'novalidate'
+        }})
+    }}
+
+    {{ form_widget(categoryForm) }}
+
+    <button class="btn btn-success">Valider</button>
+    {{ form_end(categoryForm) }}
 
     {% for article in articles %}
         <div class="article panel panel-default">
             <div class="panel-heading">
                 <a href="{{ path('article_detail', {'id': article.id}) }}"><h3>{{ article.name }}</h3></a>
                 <p>Ajouté le {{ article.dateCreated|date('d-m-Y H:i:s') }} par {{ article.user.username }}</p>
+                <p>{% for categorie in categories
+                        if categorie.id == article.getArticleCategory.id %}
+                            {{ categorie.name }}
+                    {% endfor %}
+                </p>
             </div>
             <div class="panel-body">
                 <table class="table">

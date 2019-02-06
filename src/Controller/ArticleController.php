@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\AddArticleType;
+use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -46,46 +48,34 @@ class ArticleController extends AbstractController
      * @Route(
      *          "/article/list",
      *          name="article_list",
-     *          methods={"POST"}
-     *     )
-     */
-    public function TriArticle()
-    {
-        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
-        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-
-
-
-        $categories = $categoryRepository->findAll();
-        $articles = $articleRepository->findAll();
-
-        return $this->render("article/list.html.twig",[
-            "articles" => $articles,
-            "categories" => $categories
-        ]);
-    }
-
-    /**
-     * @Route(
-     *          "/article/list",
-     *          name="article_list",
      *          methods={"GET","POST"}
      *     )
      */
-    public function listArticle()
+    public function listArticle(Request $request)
     {
         $articleRepository = $this->getDoctrine()->getRepository(Article::class);
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
 
-        $cat = $this->get("category");
-        var_dump($cat);
+        $category = new Category();
+        $categoryForm = $this->createForm( CategoryType::class,$category);
+        $categoryForm->handleRequest($request);
+
+        if($categoryForm->isSubmitted() && $categoryForm->isValid() && $category->getName() !== "Tous")
+        {
+            $category = $categoryRepository->findBy(array("name" => $category->getName()));
+            $articles = $articleRepository->findBy(array("article_category" => $category));
+        }
+        else
+        {
+            $articles = $articleRepository->findAll();
+        }
 
         $categories = $categoryRepository->findAll();
-        $articles = $articleRepository->findAll();
 
         return $this->render("article/list.html.twig",[
             "articles" => $articles,
-            "categories" => $categories
+            "categories" => $categories,
+            "categoryForm" => $categoryForm->createView()
         ]);
     }
 

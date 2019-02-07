@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\AddArticleType;
 use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -71,10 +71,13 @@ class ArticleController extends AbstractController
         }
 
         $categories = $categoryRepository->findAll();
+        $userFavorites = $articleRepository->findByFavorite();
+
 
         return $this->render("article/list.html.twig",[
             "articles" => $articles,
             "categories" => $categories,
+            "favorites" => $userFavorites,
             "categoryForm" => $categoryForm->createView()
         ]);
     }
@@ -108,6 +111,31 @@ class ArticleController extends AbstractController
         $articleRepository = $this->getDoctrine()->getRepository(Article::class);
         $articleRepository->remove($id);
         return $this->redirectToRoute("account");
+    }
+
+    /**
+     * @Route(
+     *     "article/list/favorite/{id}",
+     *      name="favorite",
+     *     requirements={"id":"\d+"},
+     *     methods={"GET", "POST"}
+     *     )
+     */
+    public function addFavorite($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articleRepository = $this->getDoctrine()->getRepository( Article::class);
+        $userRepository = $this->getDoctrine()->getRepository( User::class);
+
+        $article = $articleRepository->find($id);
+        $user = $userRepository->find($this->getUser());
+
+        $user->addFavorite($article);
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute("article_list");
     }
 
 }

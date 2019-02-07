@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -64,9 +66,15 @@ class Article
      */
     private $article_category;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="favorite")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->setDateCreated(new \DateTime());
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +174,34 @@ class Article
     public function setArticleCategory(?Category $article_category): self
     {
         $this->article_category = $article_category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeFavorite($this);
+        }
 
         return $this;
     }

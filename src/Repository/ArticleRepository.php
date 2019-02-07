@@ -46,4 +46,20 @@ class ArticleRepository extends ServiceEntityRepository
         $query->execute();
     }
 
+    public function findByFavorite()
+    {
+        //Le query builder sait que l'on utilise l'entity Question
+        //car on est dans le QuestionRepository
+        $qd = $this->createQueryBuilder('a');
+        //Pour lui dire l'entity que l'on veut utiliser (même si c'est sous-entendue)
+        //$qd->from(Question::class);
+
+        $qd->join('a.users', 'u')
+            ->join('u.favorite', 'f');
+
+        $query = $qd->getQuery();
+        $questions = $query->getResult();
+        return $questions;
+    }
+
 }

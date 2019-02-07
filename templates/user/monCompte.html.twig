@@ -9,26 +9,4 @@
         <p>Email: {{ app.user.email }}</p>
     </div>
 
-    <h2>Mes articles en vente</h2>
-    {% for article in articles %}
-        <div class="article panel panel-default">
-            <div class="panel-heading align-center">
-                <h3>{{ article.name }}</h3>
-                <p>Ajouté le {{ article.dateCreated|date('d-m-Y H:i:s') }}</p>
-                <a class="btn btn-primary float-right" href="{{ path("article_remove", {'id': article.id}) }}">
-                    Annuler la vente</a>
-                <a class="btn btn-primary float-right">modifier la vente</a>
-            </div>
-            <div class="panel-body">
-                <table class="table">
-                    <th>Description</th> <th>Prix</th>
-                    <tr>
-                        <td class="col-10">{{ article.description }}</td>
-                        <td class="col-2">{{ article.price }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    {% endfor %}
-
 {% endblock %}

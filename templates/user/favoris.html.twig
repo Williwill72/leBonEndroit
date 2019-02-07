@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mes favoris{% endblock %}
+
+{% block content %}
+
+    <h2>Mes articles favoris</h2>
+    {% for favorite in favorites %}
+        <div class="article panel panel-default">
+            <div class="panel-heading align-center">
+                <h3>{{ favorite.name }}</h3>
+                <p>Ajouté le {{ favorite.dateCreated|date('d-m-Y H:i:s') }}</p>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <th>Description</th> <th>Prix</th>
+                    <tr>
+                        <td class="col-10">{{ favorite.description }}</td>
+                        <td class="col-2">{{ favorite.price }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

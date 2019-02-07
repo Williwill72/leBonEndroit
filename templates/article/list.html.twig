@@ -26,6 +26,21 @@
                         if categorie.id == article.getArticleCategory.id %}
                             {{ categorie.name }}
                     {% endfor %}
+
+                    {% set fav = false %}
+
+                    {% for favorite in favorites %}
+                        {% if favorite.id == article.id %}
+                            {% set fav = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if app.user and not fav %}
+                        <a class="float-right btn btn-dark" href="{{ path("favorite", {"id": article.id}) }}">
+                            Ajouter à mes favoris</a>
+                    {% elseif app.user %}
+                        <span class="float-right">Dans mes favoris</span>
+                    {% endif %}
                 </p>
             </div>
             <div class="panel-body">

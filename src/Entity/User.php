@@ -45,9 +45,15 @@ class User implements UserInterface
      */
     private $user_article;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Article", inversedBy="users")
+     */
+    private $favorite;
+
     public function __construct()
     {
         $this->user_article = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +167,32 @@ class User implements UserInterface
             if ($userArticle->getUser() === $this) {
                 $userArticle->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(Article $favorite): self
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Article $favorite): self
+    {
+        if ($this->favorite->contains($favorite)) {
+            $this->favorite->removeElement($favorite);
         }
 
         return $this;

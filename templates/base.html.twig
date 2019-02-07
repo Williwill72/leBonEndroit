@@ -26,8 +26,16 @@
                     <div class="nav-link">
                         <a href="{{ path('article_add') }}">Ajouter</a>
                     </div>
-                    <div class="nav-link offset-5">
-                        <a href="{{ path('account') }}">Mon compte</a>
+                    <div class="test nav-link offset-5">
+                        <ul class="navigation">
+                            <li class="toggleSubMenu"><span>V Mon profil </span>
+                                <ul class="subMenu">
+                                    <li><a href="{{ path('account') }}">Profil</a></li>
+                                    <li><a href="{{ path('article') }}">Articles</a></li>
+                                    <li><a href="{{ path('favoris') }}">Favoris</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                     <div class="nav-link">
                         <a href="{{ path('logout') }}">Déconnexion</a>

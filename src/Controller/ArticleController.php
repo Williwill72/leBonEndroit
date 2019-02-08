@@ -138,4 +138,25 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute("article_list");
     }
 
+    /**
+     * @Route(
+     *     "article/modif/{id}",
+     *     name="article_modif",
+     *     requirements={"id":"\d+"},
+     *     methods={"GET","POST"}
+     *     )
+     */
+    public function displayModifArticle($id)
+    {
+        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $articleRepository->find($id);
+
+        $request = $this->get('request_stack');
+
+        return $this->render("article/modif.html.twig",[
+            "article" => $article
+        ]);
+    }
+
+
 }

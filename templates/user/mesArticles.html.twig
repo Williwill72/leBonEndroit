@@ -12,7 +12,8 @@
             <p>Ajouté le {{ article.dateCreated|date('d-m-Y H:i:s') }}
                 <a class="btn btn-primary float-right" href="{{ path("article_remove", {'id': article.id}) }}">
                     Annuler la vente</a>
-                <a class="btn btn-primary float-right">modifier la vente</a></p>
+                <a class="btn btn-primary float-right" href="{{ path("article_modif", {'id': article.id}) }}">
+                    modifier la vente</a></p>
         </div>
         <div class="panel-body">
             <table class="table">
